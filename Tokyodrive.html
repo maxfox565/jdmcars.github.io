@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JDM cars</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background-color: black;
+            font-family: 'Geometos [RUS by Daymarius]', Arial, sans-serif;
+            margin: 0;
+            padding-top: 0;
+            color: var(--text-color);
+        }
+        header {
+            background-color: #1b1b1b;
+            height: 70px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            transition: transform 0.3s ease-in-out;
+        }
+        header.hide {
+            transform: translateY(-100%);
+        }
+        .nav-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            margin-left: 15px;
+        }
+        
+        .log {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s;
+        }
+        
+        .nav-link {
+            color: white;
+            font-size: 16px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Dropdown menu */
+        .dropdown-menu {
+            background-color: #444;
+            border: 1px solid #666;
+            min-width: 200px;
+        }
+        
+        .dropdown-item {
+            color: white;
+            font-size: 16px;
+            padding: 8px 15px;
+            margin: 0;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #555;
+            color: #fff;
+        }
+        main {
+            width: 100%;
+            margin: 0 auto;
+            overflow-x: hidden;
+        }
+        .Video1 {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            margin: 0;
+        }
+        .Video1 video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .model, .model2, .model3, .JDM {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            width: 100%;
+            min-height: 100vh;
+            padding: 50px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .model.animate, .model2.animate, .model3.animate, .JDM.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .Video2, .cartinka {
+            width: 100%;
+            max-width: 550px;
+            margin: 20px auto;
+        }
+        .text, .text1 {
+            color: white;
+            font-size: 24px;
+            margin: 20px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        .model2, .JDM {
+            background-image: url(fon.gif);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .model2 .text1, .JDM .TXT {
+            color: black;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+        .JDM {
+            text-align: center;
+        }
+        .JDM .TXT {
+            font-size: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .JDM .TXT h1 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+        }
+        .buy-btn {
+            background-color:  #e04b00 ;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            margin-top: 30px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .buy-btn:hover {
+            background-color: black;
+        }
+        .buy-btnm {
+            background-color: black;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            margin-top: 30px;
+            cursor: button;
+            transition: background-color 0.3s;
+        }
+        .buy-btnm:hover {
+            background-color: var(--primary-color);
+        }
+        .price-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .price {
+            font-size: 1.5rem;
+            color: white;
+        }
+        .model2 .price {
+            color: black;
+        }
+        .modal-content {
+            background-color: rgb(29, 29, 29);
+            color: white;
+        }
+        .modal-header {
+            border-bottom: 1px solid #444;
+        }
+        .modal-footer {
+            border-top: 1px solid #444;
+        }
+        .form-control {
+            background-color: #333;
+            border: 1px solid #555;
+            color: white;
+            margin-bottom: 15px;
+        }
+        .form-control:focus {
+            background-color: #444;
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .map {
+            margin: 50px auto;
+            width: 95%;
+            height: 50vh;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        .map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        footer {
+            background-image: url(fon.gif);
+            background-size: cover;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 30px 20px;
+        }
+        .ft {
+            flex: 1 1 300px;
+            margin: 20px;
+            min-width: 250px;
+        }
+        .ft h1 {
+            color: black;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+        .ft a, .ft p {
+            color: black;
+            font-size: 18px;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+        .ft a:hover {
+            color: grey;
+        }
+        .infoc {
+            width: 100%;
+            margin: 20px;
+        }
+        .info {
+            font-size: 12px;
+            color: black;
+            text-align: center;
+            line-height: 1.5;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
+        }
+        @media (max-width: 767px) {
+            .log {
+                height: 20px;
+            }
+            .model2 {
+                flex-direction: column-reverse;
+            }
+            .JDM .TXT {
+                font-size: 1.5rem;
+            }
+            .JDM .TXT h1 {
+                font-size: 2rem;
+            }
+            .Video1 {
+                height: 60vh;
+            }
+        }
+        @media (min-width: 768px) {
+            body {
+                padding-top: 0;
+            }
+            .log {
+                height: 25px;
+            }
+            header {
+                height: 80px;
+                padding: 0 30px;
+            }
+            .nav-links {
+                gap: 30px;
+            }
+            .nav-link {
+                font-size: 20px;
+            }
+            .Video1 {
+                height: 100vh;
+            }
+            .model, .model2, .model3 {
+                flex-direction: row;
+                gap: 50px;
+            }
+            .Video2, .cartinka {
+                margin: 0 20px;
+            }
+            .text, .text1 {
+                text-align: left;
+                margin: 0 20px;
+            }
+            .map {
+                height: 60vh;
+            }
+        }
+        @media (min-width: 992px) {
+            .text, .text1 {
+                font-size: 32px;
+            }
+            .map {
+                height: 70vh;
+            }
+            .log {
+                height: 30px;
+            }
+        }
+        @media (min-width: 1200px) {
+            .log {
+                height: 40px;
+            }
+            .text, .text1 {
+                font-size: 40px;
+            }
+            .map {
+                height: 80vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="mainHeader">
+        <div class="nav-container">
+            <div class="nav-links">
+                <a href="#top" class="nav-link">Главная</a>
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" id="modelsDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Модели
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="modelsDropdown">
+                        <li><a class="dropdown-item" href="#GTR34">Nissan Skyline R34</a></li>
+                        <li><a class="dropdown-item" href="#MK4">Toyota Supra MK4</a></li>
+                        <li><a class="dropdown-item" href="#RX7">Mazda RX-7</a></li>
+                    </ul>
+                </div>
+                <a href="#map" class="nav-link">Карта</a>
+                <a href="#fot" class="nav-link">Контакты</a>
+            </div>
+            <img class="log" src="log.png" alt="Логотип">
+        </div>
+    </header>
+    <main>
+        <a id="top"></a>
+        <div class="Video1">
+            <video autoplay muted loop playsinline>
+                <source src="video.mp4" type="video/mp4">
+            </video>
+        </div>
+        <a id="GTR34"></a>
+        <div class="model">
+            <div class="Video2">
+                <img src="GTR34.gif" alt="Nissan Skyline R34">
+            </div>
+            <div class="text">
+                <p>Погрузись в легенду!</p>
+                <p>Nissan Skyline R34 -</p>
+                <p>икона JDM-культуры</p>
+                <p>мощь стиль и технологии</p>
+                <p>Твой Skyline ждёт тебя!</p>
+                <div class="price-container">
+                    <button class="buy-btn" data-bs-toggle="modal" data-bs-target="#orderModal">Купить</button>
+                    <span class="price">3 999 999 ₽</span>
+                </div>
+            </div>
+        </div>
+        <a id="MK4"></a>
+        <div class="model2">
+            <div class="text1">
+                <p>Toyota Supra MK4</p>
+                <p>легенда скорости и стиля</p>
+                <p>cердце JDM-культуры с </p>
+                <p>турбонаддувом и </p>
+                <p>бесконечным потенциалом</p>
+                <p>Твоя мечта за рулем!</p>
+                <div class="price-container">
+                    <button class="buy-btnm" data-bs-toggle="modal" data-bs-target="#orderModal">Купить</button>
+                    <span class="price">4 999 999 ₽</span>
+                </div>
+            </div>
+            <div class="cartinka">
+                <img src="03d5e1b108f59bf0c897ed97d7447eaa_upscayl_3x_upscayl-standard-4x.png" alt="Toyota Supra MK4">
+            </div>
+        </div>
+        <a id="RX7"></a>
+        <div class="model3">
+            <div class="Video2">
+                <img src="RX7.gif" alt="Mazda RX-7">
+            </div>
+            <div class="text">
+                <p>Почуствуй дух ротора!</p>
+                <p>Mazda RX-7 легенда JDM</p>
+                <p>с уникальным дизайном</p>
+                <p>и сердцем 13B-REW</p>
+                <p>ДРифт, скорость, стиль -</p>
+                <p>твоя RX-7 ждёт!</p>
+                <div class="price-container">
+                    <button class="buy-btn" data-bs-toggle="modal" data-bs-target="#orderModal">Купить</button>
+                    <span class="price">2 999 999 ₽</span>
+                </div>
+            </div>
+        </div>
+        <div class="JDM">
+            <div class="TXT">
+                <h1>JDM — это больше, чем просто машины.</h1>
+                <h1>Это стиль жизни</h1>
+                <p>Если вы цените уникальность, мощь и историю, которые стоят за</p>
+                <p>каждым JDM-автомобилем, вы попали по адресу. Это не просто</p>
+                <p>транспорт — это философия, объединяющая тех, кто живёт с</p>
+                <p>страстью к скорости, свободе и неповторимому стилю</p>
+            </div>
+        </div>
+        <a id="map"></a>
+        <div class="map" style="position:relative;overflow:hidden;">
+            <iframe
+                src="https://yandex.ru/map-widget/v1/?ll=66.676582%2C63.709674&mode=routes&rl=66.676551%2C63.709658~0.000026%2C-0.000009~-0.000025%2C0.000057~-0.000043%2C-0.000073&rtext=63.709656%2C66.676452~63.709619%2C66.676646&rtt=auto&ruri=~&z=20.29"
+                frameborder="1" allowfullscreen="true" style="position:relative;"></iframe>
+        </div>
+        <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderModalLabel">Оформление заказа</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="orderForm">
+                            <div class="mb-3">
+                                <label for="fullName" class="form-label">ФИО</label>
+                                <input type="text" class="form-control" id="fullName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Телефон</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="carModel" class="form-label">Модель автомобиля</label>
+                                <input type="text" class="form-control" id="carModel" readonly>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="button" class="btn btn-primary" id="submitOrder">Отправить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a id="fot"></a>
+        <footer>
+            <div class="ft">
+                <h1>Модели</h1>
+                <a class="dropdown-item" href="#GTR34">Nissan GTR34</a>
+                <a class="dropdown-item" href="#MK4">Toyota Supra MK4</a>
+                <a class="dropdown-item" href="#RX7">Mazda RX-7</a>
+            </div>
+            <div class="ft">
+                <h1>Соцсети</h1>
+                <a class="dropdown-item" href="">Telegram</a>
+                <a class="dropdown-item" href="">VK</a>
+                <a class="dropdown-item" href="">WhatsApp</a>
+            </div>
+            <div class="ft">
+                <h1>JDM CARS</h1>
+                <p>+79473593891</p>
+                <p>jdmcarsavto@gmail.com</p>
+                <p>Центральная улица, 27, Белоярский, ХМАО</p>
+            </div>
+            <div class="infoc">
+                <p class="info">Все права на информацию, графические изображения, тексты и иные содержащиеся на настоящем сайте материалы и объекты (далее — материалы), принадлежат юридическим лицам, входящим в ООО «JDM», рекламным агентствам, а также иным третьим в соответствии с условиями договоров, заключенных между юридическими лицами ООО «JDM cars» и соответствующими третьими лицами. Никакие содержащиеся на настоящем сайте материалы или их часть не могут быть воспроизведены, использованы или переданы третьим лицам в целях извлечения прибыли без предварительного согласия ООО «JDM cars» в письменной форме. Вы можете просматривать и распечатывать материалы, содержащиеся на настоящем сайте, для целей личного использования и/или принятия решений о приобретении продукции указанных на сайте.</p>
+                <p class="info">© 2025, ООО «JDM cars»</p>
+            </div>
+        </footer>
+    </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const header = document.getElementById('mainHeader');
+            let lastScroll = 0;
+            window.addEventListener('scroll', function () {
+                const currentScroll = window.pageYOffset;
+                if (currentScroll <= 0) {
+                    header.classList.remove('hide');
+                    return;
+                }
+                if (currentScroll > lastScroll && !header.classList.contains('hide')) {
+                    header.classList.add('hide');
+                } else if (currentScroll < lastScroll && header.classList.contains('hide')) {
+                    header.classList.remove('hide');
+                }
+                lastScroll = currentScroll;
+            });
+            const animatedElements = document.querySelectorAll('.model, .model2, .model3, .JDM');
+            function checkVisibility() {
+                animatedElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementBottom = element.getBoundingClientRect().bottom;
+                    const windowHeight = window.innerHeight;
+                    const isVisible = elementTop < windowHeight * 0.75 && elementBottom > 0;
+                    if (isVisible) {
+                        element.classList.add('animate');
+                    } else {
+                        element.classList.remove('animate');
+                    }
+                });
+            }
+            checkVisibility();
+            let isScrolling;
+            window.addEventListener('scroll', function () {
+                window.clearTimeout(isScrolling);
+                isScrolling = setTimeout(checkVisibility, 50);
+            }, false);
+            const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('mouseenter', function () {
+                    const dropdown = new bootstrap.Dropdown(toggle);
+                    dropdown.show();
+                });
+                const dropdownMenu = toggle.nextElementSibling;
+                dropdownMenu.addEventListener('mouseleave', function () {
+                    const dropdown = bootstrap.Dropdown.getInstance(toggle);
+                    dropdown.hide();
+                });
+            });
+            const orderModal = document.getElementById('orderModal');
+            if (orderModal) {
+                orderModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    const section = button.closest('.model, .model2, .model3');
+                    let carName = '';
+                    if (section.classList.contains('model')) {
+                        carName = 'Nissan Skyline R34';
+                    } else if (section.classList.contains('model2')) {
+                        carName = 'Toyota Supra MK4';
+                    } else if (section.classList.contains('model3')) {
+                        carName = 'Mazda RX-7';
+                    }
+                    document.getElementById('carModel').value = carName;
+                });
+                document.getElementById('submitOrder').addEventListener('click', function() {
+                    const form = document.getElementById('orderForm');
+                    if (form.checkValidity()) {
+                        alert('Спасибо за заказ! Мы свяжемся с вами в ближайшее время.');
+                        const modal = bootstrap.Modal.getInstance(orderModal);
+                        modal.hide();
+                    } else {
+                        form.reportValidity();
+                    }
+                });
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
